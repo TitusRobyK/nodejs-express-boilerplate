@@ -1,9 +1,11 @@
 ### Express Framework Boilerplate Code to get started
 
 Clone the repository
+```
 run the command "npm install"
 run the command "npm run dev" to run you express server in local
 hit the following url as a GET method in your REST Client  : http://localhost:5000/api/test-api-service/200303
+```
 
 #### Project Structure
 
