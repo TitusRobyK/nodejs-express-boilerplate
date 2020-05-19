@@ -4,8 +4,7 @@ exports.apiFetch = [
 	function (req, res) {
 		try {
             //authenticate & logic to fetch data
-            console.log("Entered GET METHOD")
-            return apiResponse.successResponse(res,req.params.id,"Get Method Success");
+            return apiResponse.successResponseWithData(res,req.params.id,"Api Get Success");
 
 		} catch (err) {
 			//throw error in json response with status 500. 
@@ -18,7 +17,7 @@ exports.apiStore = [
 	function (req, res) {
 		try {
             //authenticate & logic to save data
-            return apiResponse.successResponse(res,req.params.id,"Post Method Success");
+            return apiResponse.successResponseWithData(res,req.params.id,"Api Post Success");
 
 		} catch (err) {
 			//throw error in json response with status 500. 
@@ -31,8 +30,8 @@ exports.apiStore = [
 exports.apiDelete = [
 	function (req, res) {
 		try {
-            //authenticate & logic to delte data
-            return apiResponse.successResponse(res,req.params.id,"Deletion Success");
+            //authenticate & logic to delete data
+            return apiResponse.successResponseWithData(res,req.params.id,"Deletion Success");
 
 		} catch (err) {
 			//throw error in json response with status 500. 

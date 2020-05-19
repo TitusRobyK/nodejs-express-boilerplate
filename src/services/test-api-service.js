@@ -1,6 +1,6 @@
   
 var express = require("express");
-const testApiController = require("../controllers/testApiController");
+const testApiController = require("../controllers/test-api-controller");
 
 var router = express.Router();
 

@@ -1,10 +1,10 @@
 {
   "name": "express-poc",
   "version": "1.0.0",
-  "description": "a poc for learning express and bootstraping it",
+  "description": "a poc for learning express and boilerplate code for creating a minimilistic apis",
   "main": "src/main.js",
   "scripts": {
-    "start":"node index",
+    "prod":"node index",
     "dev":"nodemon index"
   },
   "author": "",
