@@ -1,4 +1,4 @@
-### Express Framework Boilerplate Code to get Start
+### Express Framework Boilerplate Code to get started
 
 Clone the repository
 run the command "npm install"
