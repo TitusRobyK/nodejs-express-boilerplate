@@ -13,7 +13,7 @@ hit the following url as a GET method in your REST Client  : http://localhost:50
 ```
 src/main.js                                 <--- Entry Point ,basic validation ,authentication etc
 ---/api-response/response.js
----/routes/api-router.js                    <--- post entry point, control reaches here
+---/routes/api-router.js                    <--- post entry point, control reaches here, various api services are specified here 
 ---/services/<your-service>.js              <--- Your services should be placed here
 ---/controllers/<your-controller>.js        <---- You API definitions,business-logic, request validations has to be done here
  
