@@ -1,9 +1,17 @@
 const apiResponse = require("../api-response/response");
+const log = require("../config/logger");
 
 exports.apiFetch = [
 	function (req, res) {
 		try {
-            //authenticate & logic to fetch data
+			//authenticate & logic to fetch data
+			log.trace('authenticate & logic to fetch data');
+			log.trace('testing')
+			log.debug('testing')
+			log.info('testing')
+			log.warn('testing')
+			log.crit('testing')
+			log.fatal('testing')
             return apiResponse.successResponseWithData(res,req.params.id,"Api Get Success");
 
 		} catch (err) {

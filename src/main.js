@@ -3,10 +3,11 @@ const path = require('path');
 const app = express();
 var apiRouter = require("./routes/api-router");
 var apiResponse = require("./api-response/response");
+const log = require('./config/logger');
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT,() => console.log(`Server started on port ${PORT}`));
+app.listen(PORT,() => log.info(`Server started on port ${PORT}`));
 
 app.use("/api/", apiRouter);
 

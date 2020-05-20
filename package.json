@@ -4,13 +4,16 @@
   "description": "a poc for learning express and boilerplate code for creating a minimilistic apis",
   "main": "src/main.js",
   "scripts": {
-    "prod":"node index",
-    "dev":"nodemon index"
+    "prod": "node index",
+    "dev": "nodemon index"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "moment": "^2.25.3",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
