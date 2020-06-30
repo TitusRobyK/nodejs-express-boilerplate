@@ -1,4 +1,6 @@
 const fs = require('fs');
+var path = require('path')
+var PROJECT_ROOT = path.join(__dirname, '..')
 const {
   createLogger,
   transports,
@@ -18,12 +20,13 @@ const logLevel = 'info'
 var logger = createLogger({
   level: logLevel,
   levels: {
-    fatal: 0,
-    crit: 1,
-    warn: 2,
-    info: 3,
-    debug: 4,
-    trace: 5
+    error: 0,
+    warn: 1,
+    info: 2,
+    http: 3,
+    verbose: 4,
+    debug: 5,
+    trace: 6
   },
   format: format.combine(
     format.prettyPrint(),
@@ -31,6 +34,9 @@ var logger = createLogger({
       format: 'DD-MM-YYYY hh:mm:ss A'
     }),
     format.printf(nfo => {
+      if (nfo.stack){
+        return `${nfo.timestamp} - ${nfo.level}: ${nfo.message} - ${nfo.stack}`
+      }
       return `${nfo.timestamp} - ${nfo.level}: ${nfo.message}`
     })
   ),
@@ -43,24 +49,70 @@ var logger = createLogger({
   exitOnError: false
 })
 
-// Extend logger object to properly log 'Error' types
-var origLog = logger.log
-
-logger.log = function (level, msg) {
-  if (msg instanceof Error) {
-    var args = Array.prototype.slice.call(arguments)
-    args[1] = msg.stack
-    origLog.apply(logger, args)
-  } else {
-    origLog.apply(logger, arguments)
+logger.stream = {
+  write: function (message) {
+    logger.info(message)
   }
 }
 
-module.exports = logger;
+// A custom logger interface that wraps winston, making it easy to instrument
+// code and still possible to replace winston in the future.
 
-module.exports.stream = {
-  write: function (message) {
-    logger.info(message);
-    console.log('message = ', message);
-  },
-};
+module.exports.debug = module.exports.log = function () {
+  logger.debug.apply(logger, formatLogArguments(arguments))
+}
+
+module.exports.info = function () {
+  logger.info.apply(logger, formatLogArguments(arguments))
+}
+
+module.exports.warn = function () {
+  logger.warn.apply(logger, formatLogArguments(arguments))
+}
+
+module.exports.error = function () {
+  logger.error.apply(logger, formatLogArguments(arguments))
+}
+
+module.exports.stream = logger.stream
+
+/**
+ * Attempts to add file and line number info to the given log arguments.
+ */
+function formatLogArguments (args) {
+  args = Array.prototype.slice.call(args)
+
+  var stackInfo = getStackInfo(1)
+
+  if (stackInfo) {
+    var calleeStr = '(' + stackInfo.relativePath + ':' + stackInfo.line + ')'
+
+    if (typeof (args[0]) === 'string') {
+      args[0] = calleeStr + ' ' + args[0]
+    } else {
+      args.unshift(calleeStr)
+    }
+  }
+
+  return args
+}
+
+function getStackInfo (stackIndex) {
+  var stacklist = (new Error()).stack.split('\n').slice(3)
+  var stackReg = /at\s+(.*)\s+\((.*):(\d*):(\d*)\)/gi
+  var stackReg2 = /at\s+()(.*):(\d*):(\d*)/gi
+
+  var s = stacklist[stackIndex] || stacklist[0]
+  var sp = stackReg.exec(s) || stackReg2.exec(s)
+
+  if (sp && sp.length === 5) {
+    return {
+      method: sp[1],
+      relativePath: path.relative(PROJECT_ROOT, sp[2]),
+      line: sp[3],
+      pos: sp[4],
+      file: path.basename(sp[2]),
+      stack: stacklist.join('\n')
+    }
+  }
+}
